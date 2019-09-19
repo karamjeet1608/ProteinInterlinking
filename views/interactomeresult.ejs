@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Proteins Interlinking</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/formss.css">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark" >
+        <div class="container">
+            <a class="navbar-brand" href="/api/protein/mainpage">Proteins Interlinking</a>
+            <!-- Links -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Add
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/api/protein/addpage">Protein</a>
+                        <a class="dropdown-item" href="/api/protein/addproteininterlinking">Protein Interlinking</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="/api/protein/searchpage">Search</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="/api/protein/interactomepage">Interlinking</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div>
+        <h2 class="text-center my-2">Protein's Interlinking details</h2>
+    </div>
+    <div class="container p-5">
+        <div class="container pb-3 border border-dark">
+            <div class="row mt-3">
+                <div>
+                    <h4 class="text-center mr-3"><%= sourceprotein%> on interaction with <%= targetprotein%> has following details</h4>
+                </div>
+                <div class=" col-sm-4 container pb-2">
+                    <div>
+                        <ul class="list-group list-group-flush">
+                            <% proteindetails.forEach(function(protein){ %>
+                                <li class="list-group-item">Fusion Value: <%= protein.fusion %></li>
+                                <li class="list-group-item">combinedscore Value: <%= protein.combinedscore %></li>
+                                <li class="list-group-item">database Value: <%= protein.database %></li>
+                                <li class="list-group-item">cooccurence Value: <%= protein.cooccurence %></li>
+                                <li class="list-group-item">experimental Value: <%= protein.experimental %></li>
+                                <li class="list-group-item">neighborhood Value: <%= protein.neighborhood %></li>
+                                <li class="list-group-item">coexpression Value: <%= protein.coexpression %></li>
+                                <li class="list-group-item">textmining Value: <%= protein.textmining %></li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

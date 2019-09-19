@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Proteins Interlinking</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/formss.css">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark" >
+        <div class="container">
+            <a class="navbar-brand" href="/api/protein/mainpage">Proteins Interlinking</a>
+            <!-- Links -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Add
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/api/protein/addpage">Protein</a>
+                        <a class="dropdown-item" href="/api/protein/addproteininterlinking">Protein Interlinking</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="/api/protein/searchpage">Search</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="/api/protein/interactomepage">Interlinking</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div>
+        <h2 class="text-center my-2">Human Proteins: 9606.</h2>
+    </div>
+    <div class="container border border-dark">
+       
+        <svg width="500" height="586"></svg>
+    </div>  
+        <script >
+            var width = window.innerWidth* 0.80
+            var height = window.innerHeight* 0.95
+            var nodes =[]
+            
+            d3.json('http://localhost:3600/api/protein/proteinlist',function(error, data){
+                nodes =data;
+
+            var svg = d3.select('svg')
+            svg.attr('width', width).attr('height', height)
+            
+            // simulation setup with all forces
+            var simulation = d3
+            .forceSimulation()
+            .force('charge', d3.forceManyBody().strength(-50))
+            .force('center', d3.forceCenter(width/2, height/2))
+            
+            function getNodeColor(node) {
+            return '#' + (Math.random().toString(16) + "000000").substring(2,8)
+            }
+            
+            function radiusval(){
+            var randomnumber=Math.floor((Math.random() * 15) + 1)
+                return randomnumber
+            }
+            
+            var nodeElements = svg.append("g")
+            .attr("class", "nodes")
+            .selectAll("circle")
+            .data(nodes)
+            .enter().append("circle")
+                .attr("r", radiusval)
+                .attr("fill", getNodeColor)
+            
+            var textElements = svg.append("g")
+            .attr("class", "texts")
+            .selectAll("text")
+            .data(nodes)
+            .enter().append("text")
+                .text(function (nodes) { return  nodes.name.substring(5) })
+                .attr("font-size", 15)
+                .attr("dx", 15)
+                .attr("dy", 4)
+            
+            simulation.nodes(nodes).on('tick', () => {
+                nodeElements
+                .attr('cx', function (node) { return node.x })
+                .attr('cy', function (node) { return node.y })
+                textElements
+                .attr('x', function (node) { return node.x })
+                .attr('y', function (node) { return node.y })
+                })
+            })
+                
+        </script>
+    </body>
+</html>
+
+
+
+
+
