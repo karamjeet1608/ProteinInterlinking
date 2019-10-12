@@ -27,7 +27,7 @@ app.use(expsession({secret: 'my secret', resave: false, saveUninitialized:false}
  //get all proteins
 app.get('/',(req,res)=>{
     session
-        .run('Match(n:Protein) Return(n)')
+        .run('Match(n:protein) Return(n) limit 100')
         .then(function(neoresult){
             var proteinArr = [];
             neoresult.records.forEach(function(record){
@@ -36,6 +36,7 @@ app.get('/',(req,res)=>{
                 })
             })
             res.render('index');
+            
         })
             .catch(function(err){
                 console.log(err);
