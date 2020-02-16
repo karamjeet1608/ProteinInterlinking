@@ -42,18 +42,16 @@
         <div class="container pb-3 border border-dark">
             <div class="row mt-3">
                 <div>
-                    <h4 class="text-center mr-3"><%= sourceprotein%> on interaction with <%= targetprotein%> has following details</h4>
+                    <h4 class="text-center mr-3">&nbsp;&nbsp;<%= sourceprotein%> on interaction with <%= targetprotein%> has following details</h4>
                 </div>
                 <div class=" col-sm-4 container pb-2">
                     <div>
                         <ul class="list-group list-group-flush">
                             <% proteindetails.forEach(function(protein){ %>
-                                <li class="list-group-item">Fusion Value: <%= protein.fusion %></li>
                                 <li class="list-group-item">combinedscore Value: <%= protein.combinedscore %></li>
                                 <li class="list-group-item">database Value: <%= protein.database %></li>
-                                <li class="list-group-item">cooccurence Value: <%= protein.cooccurence %></li>
                                 <li class="list-group-item">experimental Value: <%= protein.experimental %></li>
-                                <li class="list-group-item">neighborhood Value: <%= protein.neighborhood %></li>
+
                                 <li class="list-group-item">coexpression Value: <%= protein.coexpression %></li>
                                 <li class="list-group-item">textmining Value: <%= protein.textmining %></li>
                             <% }) %>

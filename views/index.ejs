@@ -36,67 +36,97 @@
         </div>
     </nav>
     <div>
-        <h2 class="text-center my-2">Human Proteins: 9606.</h2>
+        <h2 class="text-center my-2">Human Proteins</h2>
     </div>
-    <div class="container border border-dark">
-       
-        <svg width="500" height="586"></svg>
-    </div>  
-        <script >
-            var width = window.innerWidth* 0.80
-            var height = window.innerHeight* 0.95
-            var nodes =[]
-            
-            d3.json('http://localhost:3600/api/protein/proteinlist',function(error, data){
-                nodes =data;
+    <svg ></svg>
+    <script >
+        var width = window.innerWidth
+        var height = window.innerHeight
+        var nodes =[]
+    
+        d3.json('http://localhost:3800/api/protein/proteinlist',function(error, data){
+            nodes =data;
+        var svg = d3.select('svg')
+        svg.attr('width', width).attr('height', height)
+        
+        // simulation setup with all forces
+        var simulation = d3
+        .forceSimulation()
+        .force('charge', d3.forceManyBody().strength(-50))
+        .force('center', d3.forceCenter(width/2, height/2))
+        
+        function getNodeColor(node) {
+            if(nodes.Interactortype == "interactor" )
+            {
+                return "#FF0000"
+            }
+            else if(nodes.Interactortype == "substrate" )
+            {
+                return "#0000FF"
+            }else{
+                return "#FFFF00"
+            }
+        }
+        
+        function radiusval(){
+        var randomnumber=Math.floor((Math.random() * 15) + 1)
+            return randomnumber
+        }
+        
+        var nodeElements = svg.append("g")
+        .attr("class", "nodes")
+        .selectAll("circle")
+        .data(nodes)
+        .enter().append("circle")
+            .attr("r", 20)
+            .attr("fill", getNodeColor)
+        
+        var textEnsembleName = svg.append("g")
+        .attr("class", "texts")
+        .selectAll("text")
+        .data(nodes)
+        .enter().append("text")
+        .text(function (nodes) { return  nodes.EnsembleName })
+            .attr("font-size", 15)
+            .attr("dx", 15)
+            .attr("dy", 4)
+        
+        var textElementsProteinName = svg.append("g")
+        .attr("class", "texts")
+        .selectAll("text")
+        .data(nodes)
+        .enter().append("text")
+            .text(function (nodes) { return  nodes.ProteinName })
+            .attr("font-size", 15)
+            .attr("dx", 15)
+            .attr("dy", 4)
 
-            var svg = d3.select('svg')
-            svg.attr('width', width).attr('height', height)
-            
-            // simulation setup with all forces
-            var simulation = d3
-            .forceSimulation()
-            .force('charge', d3.forceManyBody().strength(-50))
-            .force('center', d3.forceCenter(width/2, height/2))
-            
-            function getNodeColor(node) {
-            return '#' + (Math.random().toString(16) + "000000").substring(2,8)
-            }
-            
-            function radiusval(){
-            var randomnumber=Math.floor((Math.random() * 15) + 1)
-                return randomnumber
-            }
-            
-            var nodeElements = svg.append("g")
-            .attr("class", "nodes")
-            .selectAll("circle")
-            .data(nodes)
-            .enter().append("circle")
-                .attr("r", radiusval)
-                .attr("fill", getNodeColor)
-            
-            var textElements = svg.append("g")
-            .attr("class", "texts")
-            .selectAll("text")
-            .data(nodes)
-            .enter().append("text")
-                .text(function (nodes) { return  nodes.name.substring(5) })
-                .attr("font-size", 15)
-                .attr("dx", 15)
-                .attr("dy", 4)
-            
-            simulation.nodes(nodes).on('tick', () => {
-                nodeElements
-                .attr('cx', function (node) { return node.x })
-                .attr('cy', function (node) { return node.y })
-                textElements
-                .attr('x', function (node) { return node.x })
-                .attr('y', function (node) { return node.y })
-                })
+/*             var textElementsGeneNames = svg.append("g")
+        .attr("class", "texts")
+        .selectAll("text")
+        .data(nodes)
+        .enter().append("text")
+            .text(function (nodes) { return  nodes.GeneNames })
+            .attr("font-size", 15)
+            .attr("dx", 15)
+            .attr("dy", 4) */
+
+        simulation.nodes(nodes).on('tick', () => {
+            nodeElements
+            .attr('cx', function (node) { return node.x })
+            .attr('cy', function (node) { return node.y })
+            textEnsembleName
+            .attr('x', function (node) { return node.x+10 })
+            .attr('y', function (node) { return node.y+20 }) 
+            textElementsProteinName
+            .attr('x', function (node) { return node.x+10 })
+            .attr('y', function (node) { return node.y-20 })
+            /* textElementsGeneNames
+            .attr('x', function (node) { return node.x+10 })
+            .attr('y', function (node) { return node.y }) */
             })
-                
-        </script>
+        })
+    </script>
     </body>
 </html>
 
